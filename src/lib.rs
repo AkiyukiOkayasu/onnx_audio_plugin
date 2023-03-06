@@ -7,8 +7,8 @@ use tract_onnx::prelude::*;
 // https://github.com/robbert-vdh/nih-plug/blob/master/plugins/examples/gain/src/lib.rs to get
 // started
 
-struct OnnxTest {
-    params: Arc<OnnxTestParams>,
+struct OnnxAudioPlugin {
+    params: Arc<OnnxAudioPluginParams>,
     // input_vec: SmallVec<[TValue; 4]>,
     input_vec: tract_ndarray::Array4<f32>,
     // tensor: Tensor::<f32>,
@@ -17,7 +17,7 @@ struct OnnxTest {
 }
 
 #[derive(Params)]
-struct OnnxTestParams {
+struct OnnxAudioPluginParams {
     /// The parameter's ID is used to identify the parameter in the wrappred plugin API. As long as
     /// these IDs remain constant, you can rename and reorder these fields as you wish. The
     /// parameters are exposed to the host in the same order they were defined. In this case, this
@@ -26,7 +26,7 @@ struct OnnxTestParams {
     pub gain: FloatParam,
 }
 
-impl Default for OnnxTest {
+impl Default for OnnxAudioPlugin {
     fn default() -> Self {
         let onnx_model = include_bytes!("../linear.onnx");
         let model = onnx()
@@ -48,7 +48,7 @@ impl Default for OnnxTest {
             .unwrap();
 
         Self {
-            params: Arc::new(OnnxTestParams::default()),
+            params: Arc::new(OnnxAudioPluginParams::default()),
             // input_vec: SmallVec::<[f32; 4]>::new(),
             // input_vec: tract_ndarray::arr1(&[0.0f32]),
             input_vec: tract_ndarray::Array4::<f32>::zeros((1, 1, 1, 1)),
@@ -57,7 +57,7 @@ impl Default for OnnxTest {
     }
 }
 
-impl Default for OnnxTestParams {
+impl Default for OnnxAudioPluginParams {
     fn default() -> Self {
         Self {
             // This gain is stored as linear gain. NIH-plug comes with useful conversion functions
@@ -87,7 +87,7 @@ impl Default for OnnxTestParams {
     }
 }
 
-impl Plugin for OnnxTest {
+impl Plugin for OnnxAudioPlugin {
     const NAME: &'static str = "Onnx Test";
     const VENDOR: &'static str = "Akiyuki Okayasu";
     const URL: &'static str = env!("CARGO_PKG_HOMEPAGE");
@@ -168,9 +168,9 @@ impl Plugin for OnnxTest {
     }
 }
 
-impl ClapPlugin for OnnxTest {
-    const CLAP_ID: &'static str = "com.groundless-electronics.onnx-test";
-    const CLAP_DESCRIPTION: Option<&'static str> = Some("A short description of your plugin");
+impl ClapPlugin for OnnxAudioPlugin {
+    const CLAP_ID: &'static str = "com.groundless-electronics.onnx-audio-plugin";
+    const CLAP_DESCRIPTION: Option<&'static str> = Some("Audio plug-in example using ONNX");
     const CLAP_MANUAL_URL: Option<&'static str> = Some(Self::URL);
     const CLAP_SUPPORT_URL: Option<&'static str> = None;
 
@@ -178,8 +178,8 @@ impl ClapPlugin for OnnxTest {
     const CLAP_FEATURES: &'static [ClapFeature] = &[ClapFeature::AudioEffect, ClapFeature::Stereo];
 }
 
-impl Vst3Plugin for OnnxTest {
-    const VST3_CLASS_ID: [u8; 16] = *b"onnxtest        ";
+impl Vst3Plugin for OnnxAudioPlugin {
+    const VST3_CLASS_ID: [u8; 16] = *b"onnxaudioplugin ";
 
     // And don't forget to change these categories, see the docstring on `VST3_SUBCATEGORIES` for more
     // information
@@ -187,5 +187,5 @@ impl Vst3Plugin for OnnxTest {
         &[Vst3SubCategory::Fx, Vst3SubCategory::Dynamics];
 }
 
-nih_export_clap!(OnnxTest);
-nih_export_vst3!(OnnxTest);
+nih_export_clap!(OnnxAudioPlugin);
+nih_export_vst3!(OnnxAudioPlugin);
