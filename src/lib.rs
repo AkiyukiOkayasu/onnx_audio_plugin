@@ -49,10 +49,8 @@ impl Default for OnnxAudioPlugin {
 
         Self {
             params: Arc::new(OnnxAudioPluginParams::default()),
-            // input_vec: SmallVec::<[f32; 4]>::new(),
-            // input_vec: tract_ndarray::arr1(&[0.0f32]),
             input_vec: tract_ndarray::Array4::<f32>::zeros((1, 1, 1, 1)),
-            model: model,
+            model,
         }
     }
 }
@@ -161,9 +159,9 @@ impl Plugin for OnnxAudioPlugin {
     ) -> ProcessStatus {
         for channel_samples in buffer.iter_samples() {
             // Smoothing is optionally built into the parameters themselves
-            let gain = self.params.gain.smoothed.next();
+            // let gain = self.params.gain.smoothed.next();
 
-            for sample in channel_samples {
+            for _sample in channel_samples {
                 // self.input_vec.fill(*sample);
                 // self.input_vec[[0, 0, 0, 0]] = *sample;
                 let tensor = self.input_vec.clone().into_tensor();
