@@ -28,7 +28,7 @@ struct OnnxTestParams {
 
 impl Default for OnnxTest {
     fn default() -> Self {
-        let onnx_model = include_bytes!("../linear_fixed.onnx");
+        let onnx_model = include_bytes!("../linear.onnx");
         let model = onnx()
             .model_for_read(&mut BufReader::new(&onnx_model[..]))
             .unwrap()
