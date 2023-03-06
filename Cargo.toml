@@ -3,9 +3,9 @@ name = "onnx_audio_plugin"
 version = "0.1.0"
 edition = "2021"
 authors = ["Akiyuki Okayasu <akiyuki.okayasu@gmail.com>"]
-license = "ISC"
 homepage = "https://youtu.be/dQw4w9WgXcQ"
 description = "A short description of your plugin"
+license = "GPLv2"
 
 [workspace]
 members = ["xtask"]
