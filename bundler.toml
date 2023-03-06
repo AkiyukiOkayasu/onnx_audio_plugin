@@ -5,4 +5,4 @@
 # name = "Human Readable Plugin Name"  # defaults to <package_name>
 
 [onnx_test]
-name = "Onnx Test"
+name = "Onnx Audio Plugin"

@@ -1,5 +1,5 @@
 [package]
-name = "onnx_test"
+name = "onnx_audio_plugin"
 version = "0.1.0"
 edition = "2021"
 authors = ["Akiyuki Okayasu <akiyuki.okayasu@gmail.com>"]
