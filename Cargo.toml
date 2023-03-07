@@ -23,7 +23,11 @@ tract-onnx = "0.19.7"
 # nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", default_features = false, features = ["assert_process_allocs"] }
 
 [profile.release]
-lto = "thin"
+# Rust Performance Book
+# https://nnethercote.github.io/perf-book/build-configuration.html
+lto = "fat"
+codegen-units = 1
+panic = "abort"
 strip = "symbols"
 
 [profile.profiling]
