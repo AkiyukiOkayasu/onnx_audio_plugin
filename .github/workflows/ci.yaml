@@ -33,7 +33,7 @@ jobs:
       run: |
         echo -e "# Clippy  \n" > clippy.txt
         cargo clippy -v --all-targets >> clippy.txt
-        gh pr comment ${{ github.event.pull_request.number }} -F ./clippy.txt --repo ${{ github.repository }}
+        gh pr comment ${{ github.event.pull_request.number }} -F ./clippy.txt
     - name: Bundle
       run: cargo xtask bundle onnx_audio_plugin --release
     - name: Install pluginval
@@ -45,4 +45,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
       run: |        
         cargo llvm-cov --html
-        gh pr comment ${{ github.event.pull_request.number }} -F target/llvm-cov/html/index.html --repo ${{ github.repository }}
+        gh pr comment ${{ github.event.pull_request.number }} -F target/llvm-cov/html/index.html
