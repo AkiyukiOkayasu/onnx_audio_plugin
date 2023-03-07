@@ -41,4 +41,8 @@ jobs:
     - name: Validate VST3 plugin
       run: ./pluginval --verbose --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
     - name: Code coverage
-      env:        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}              run: |                cargo llvm-cov --html        gh pr comment ${{ github.event.pull_request.number }} -F target/llvm-cov/html/index.html --repo ${{ github.repository }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+      run: |        
+        cargo llvm-cov --html
+        gh pr comment ${{ github.event.pull_request.number }} -F target/llvm-cov/html/index.html --repo ${{ github.repository }}
