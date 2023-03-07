@@ -33,9 +33,7 @@ jobs:
       run: cargo xtask bundle onnx_audio_plugin --release
     - name: Install pluginval
       run: curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
-    - name: list all
-      run: ls -a; ./pluginval --help
     - name: Validate VST3 plugin
-      run: ./pluginval --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
+      run: ./pluginval --verbose --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
     - name: Code coverage
       run: cargo llvm-cov
