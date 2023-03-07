@@ -34,7 +34,7 @@ jobs:
     - name: Install pluginval
       run: curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
     - name: list all
-      run: ls -a
+      run: ls -a; ./pluginval --help
     - name: Validate VST3 plugin
       run: ./pluginval --validate --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
     - name: Code coverage
