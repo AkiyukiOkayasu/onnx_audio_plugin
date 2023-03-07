@@ -36,6 +36,6 @@ jobs:
     - name: list all
       run: ls -a; ./pluginval --help
     - name: Validate VST3 plugin
-      run: ./pluginval --validate --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
+      run: ./pluginval --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
     - name: Code coverage
       run: cargo llvm-cov
