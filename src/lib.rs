@@ -168,9 +168,9 @@ impl Plugin for OnnxAudioPlugin {
                 let tensor = self.input_vec.clone().into_tensor();
                 let result = self.model.run(tvec![tensor.into()]).unwrap();
                 let to_show = result[0].to_array_view::<f32>().unwrap();
-                // let s = to_show[0];
+                let s = to_show[[0, 0, 0, 0]];
                 // println!("result: {to_show}");
-                // *sample = s;
+                *sample = s;
             }
         }
 
