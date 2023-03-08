@@ -162,15 +162,11 @@ impl Plugin for OnnxAudioPlugin {
             // let gain = self.params.gain.smoothed.next();
 
             for sample in channel_samples {
-                self.input_vec.fill(*sample);
-                // self.input_vec[[0, 0, 0, 0]] = *sample;
-                // dbg!(&self.input_vec);
+                self.input_vec[[0, 0, 0, 0]] = *sample;
                 let tensor = self.input_vec.clone().into_tensor();
                 let result = self.model.run(tvec![tensor.into()]).unwrap();
-                let to_show = result[0].to_array_view::<f32>().unwrap();
-                let s = to_show[[0, 0, 0, 0]];
-                // println!("result: {to_show}");
-                *sample = s;
+                let output_vec = result[0].to_array_view::<f32>().unwrap();
+                *sample = output_vec[[0, 0, 0, 0]];
             }
         }
 
