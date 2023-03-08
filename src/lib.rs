@@ -86,7 +86,7 @@ impl Default for OnnxAudioPluginParams {
 }
 
 impl Plugin for OnnxAudioPlugin {
-    const NAME: &'static str = "Onnx Test";
+    const NAME: &'static str = "Onnx Audio Plugin";
     const VENDOR: &'static str = "Akiyuki Okayasu";
     const URL: &'static str = env!("CARGO_PKG_HOMEPAGE");
     const EMAIL: &'static str = "akiyuki.okayasu@gmail.com";
