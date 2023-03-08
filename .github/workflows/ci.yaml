@@ -27,8 +27,8 @@ jobs:
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
-    - name: Clippy
-      run: cargo clippy -v --all-targets 
+    - name: Clippy      
+      run: cargo clippy -v --all-targets
     - name: Bundle
       run: cargo xtask bundle onnx_audio_plugin --release
     - name: Install pluginval
@@ -36,4 +36,8 @@ jobs:
     - name: Validate VST3 plugin
       run: ./pluginval --verbose --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
     - name: Code coverage
-      run: cargo llvm-cov
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+      run: |        
+        cargo llvm-cov --html
+        gh pr comment ${{ github.event.pull_request.number }} -F target/llvm-cov/html/index.html
