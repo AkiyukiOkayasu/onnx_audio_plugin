@@ -32,7 +32,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo -e "# Clippy  \n" > clippy.txt
-        cargo clippy -v --all-targets >> clippy.txt
+        cargo clippy --all-targets &> clippy.txt
         gh pr comment ${{ github.event.pull_request.number }} -F ./clippy.txt
     - name: Bundle
       run: cargo xtask bundle onnx_audio_plugin --release
