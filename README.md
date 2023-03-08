@@ -12,3 +12,12 @@ After installing [Rust](https://rustup.rs/), you can compile Onnx Test as follow
 ```shell
 cargo xtask bundle onnx_audio_plugin --release
 ```
+
+```shell
+pluginval target/bundled/onnx_audio_plugin.vst3whi
+```
+
+## ONNX
+
+linear.onnx is phase invertor.  
+[Netron](https://netron.app/)  
