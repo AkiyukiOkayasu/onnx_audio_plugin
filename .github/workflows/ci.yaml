@@ -31,7 +31,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        cargo clippy --v --all-targets
+        cargo clippy -v --all-targets
         echo -e "# Clippy  \n" > clippy.txt
         cargo clippy --all-targets &>> clippy.txt
         gh pr comment ${{ github.event.pull_request.number }} -F ./clippy.txt
