@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
     types: [ opened, synchronize, reopened ]
@@ -17,8 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: Swatinem/rust-cache@v2
-    - uses: taiki-e/install-action@cargo-llvm-cov
+    - uses: Swatinem/rust-cache@v2    
     - name: Print stable Rust version
       run: rustc --version
     - name: Formatter
@@ -34,10 +35,4 @@ jobs:
     - name: Install pluginval
       run: curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
     - name: Validate VST3 plugin
-      run: ./pluginval --verbose --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
-    - name: Code coverage
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
-      run: |        
-        cargo llvm-cov --html
-        gh pr comment ${{ github.event.pull_request.number }} -F target/llvm-cov/html/index.html
+      run: ./pluginval --verbose --strictness-level 5 target/bundled/onnx_audio_plugin.vst3    
