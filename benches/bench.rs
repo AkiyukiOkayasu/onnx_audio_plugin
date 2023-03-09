@@ -11,23 +11,16 @@ fn pre_process(c: &mut Criterion) {
     });
 }
 
-fn onnx(c: &mut Criterion) {
+fn onnxtest(c: &mut Criterion) {
     let onnx_model = include_bytes!("../linear.onnx");
     let model = onnx()
+        // load the model
         .model_for_read(&mut BufReader::new(&onnx_model[..]))
         .unwrap()
-        .with_input_fact(
-            0,
-            InferenceFact::dt_shape(f32::datum_type(), tvec![1, 1, 1, 1]),
-        )
-        .unwrap()
-        .with_output_fact(
-            0,
-            InferenceFact::dt_shape(f32::datum_type(), tvec![1, 1, 1, 1]),
-        )
-        .unwrap()
+        // optimize the model
         .into_optimized()
         .unwrap()
+        // make the model runnable and fix its inputs and outputs
         .into_runnable()
         .unwrap();
 
@@ -43,9 +36,9 @@ fn onnx(c: &mut Criterion) {
 }
 
 fn post_process(c: &mut Criterion) {
-    let output: SmallVec<[TValue; 4]> = tvec!([0, 0, 0, 0]);
+    let output = tvec!([0, 0, 0, 0]);
     c.bench_function("Post process", |b| b.iter(|| {}));
 }
 
-criterion_group!(benches, pre_process, onnx, post_process);
+criterion_group!(benches, pre_process, onnxtest, post_process);
 criterion_main!(benches);
