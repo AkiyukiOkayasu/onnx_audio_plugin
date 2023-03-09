@@ -114,8 +114,8 @@ impl Plugin for OnnxAudioPlugin {
         for channel_samples in buffer.iter_samples() {
             for sample in channel_samples {
                 self.input_vec[[0, 0, 0, 0]] = *sample;
-                let tensor = self.input_vec.clone().into_tensor();
-                let result = self.model.run(tvec![tensor.into()]).unwrap();
+                let v = self.input_vec.clone().into_tvalue();
+                let result = self.model.run(tvec!(v)).unwrap();
                 let output_vec = result[0].to_array_view::<f32>().unwrap();
                 *sample = output_vec[[0, 0, 0, 0]];
             }
