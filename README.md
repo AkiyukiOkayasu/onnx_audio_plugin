@@ -1,7 +1,8 @@
 # Onnx Audio Plugin
 
-Audio plug-in example using ONNX.  
-This project is not product ready. Note that this is only a minimal sample of using ONNX with audio plug-ins.
+Audio plug-in minimum example using ONNX.  
+This project is not product ready and is not practical. However, it is for anyone who wants to know about a minimum audio plug-in using ONNX.  
+
 If you are looking for practicality then you may want to check out [RTNeural](https://github.com/jatinchowdhury18/RTNeural).
 
 ## Install
@@ -10,7 +11,7 @@ You can download the VST3 and CLAP plug-ins from the [Release](https://github.co
 
 ## Building
 
-After installing [Rust](https://rustup.rs/), you can compile Onnx Test as follows:
+After installing [Rust](https://rustup.rs/), you can compile Onnx Audio Plugin as follows:
 
 ```shell
 cargo xtask bundle onnx_audio_plugin --release
