@@ -131,9 +131,9 @@ checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
 name = "block-buffer"
-version = "0.10.3"
+version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "69cce20737498f97b993470a6e536b8523f0af7892a4f928cceb1ac5e52ebe7e"
+checksum = "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71"
 dependencies = [
  "generic-array",
 ]
@@ -684,7 +684,7 @@ dependencies = [
 [[package]]
 name = "nih_plug"
 version = "0.0.0"
-source = "git+https://github.com/robbert-vdh/nih-plug.git#ae3356dca8cc975a0dd3d390a911f2bf56cc5ff5"
+source = "git+https://github.com/robbert-vdh/nih-plug.git#d380c15f8b3047ebe8156884a6afbd3221f1ca79"
 dependencies = [
  "anyhow",
  "anymap",
@@ -716,7 +716,7 @@ dependencies = [
 [[package]]
 name = "nih_plug_derive"
 version = "0.1.0"
-source = "git+https://github.com/robbert-vdh/nih-plug.git#ae3356dca8cc975a0dd3d390a911f2bf56cc5ff5"
+source = "git+https://github.com/robbert-vdh/nih-plug.git#d380c15f8b3047ebe8156884a6afbd3221f1ca79"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -726,7 +726,7 @@ dependencies = [
 [[package]]
 name = "nih_plug_xtask"
 version = "0.1.0"
-source = "git+https://github.com/robbert-vdh/nih-plug.git#ae3356dca8cc975a0dd3d390a911f2bf56cc5ff5"
+source = "git+https://github.com/robbert-vdh/nih-plug.git#d380c15f8b3047ebe8156884a6afbd3221f1ca79"
 dependencies = [
  "anyhow",
  "goblin",
@@ -820,7 +820,7 @@ checksum = "b7e5500299e16ebb147ae15a00a942af264cf3688f47923b8fc2cd5858f23ad3"
 
 [[package]]
 name = "onnx_audio_plugin"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "nih_plug",
  "tract-onnx",
@@ -1175,18 +1175,18 @@ checksum = "58bc9567378fc7690d6b2addae4e60ac2eeea07becb2c64b9f218b53865cba2a"
 
 [[package]]
 name = "serde"
-version = "1.0.152"
+version = "1.0.154"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb7d1f0d3021d347a83e556fc4683dea2ea09d87bccdf88ff5c12545d89d5efb"
+checksum = "8cdd151213925e7f1ab45a9bbfb129316bd00799784b174b7cc7bcd16961c49e"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.152"
+version = "1.0.154"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af487d118eecd09402d70a5d72551860e788df87b464af30e5ea6a38c75c541e"
+checksum = "4fc80d722935453bcafdc2c9a73cd6fac4dc1938f0346035d84bf99fa9e33217"
 dependencies = [
  "proc-macro2",
  "quote",
