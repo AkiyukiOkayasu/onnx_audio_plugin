@@ -6,7 +6,6 @@ use tract_onnx::prelude::*;
 struct OnnxAudioPlugin {
     params: Arc<OnnxAudioPluginParams>,
     input_vec: tract_ndarray::Array4<f32>,
-    // tensor: Tensor::<f32>,
     model: RunnableModel<TypedFact, Box<dyn TypedOp>, Graph<TypedFact, Box<dyn TypedOp>>>,
 }
 
