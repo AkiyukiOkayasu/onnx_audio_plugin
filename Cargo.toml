@@ -22,6 +22,10 @@ tract-onnx = "0.19.7"
 # the GPL compatibility requirement
 # nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", default_features = false, features = ["assert_process_allocs"] }
 
+[dev-dependencies]
+approx = "0.5.1"
+criterion = "0.4.0"
+
 [profile.release]
 # Rust Performance Book
 # https://nnethercote.github.io/perf-book/build-configuration.html
@@ -34,3 +38,7 @@ strip = "symbols"
 inherits = "release"
 debug = true
 strip = "none"
+
+[[bench]]
+name = "bench"
+harness = false
