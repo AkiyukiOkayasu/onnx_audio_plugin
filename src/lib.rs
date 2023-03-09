@@ -86,7 +86,7 @@ impl Default for OnnxAudioPluginParams {
 }
 
 impl Plugin for OnnxAudioPlugin {
-    const NAME: &'static str = "Onnx Test";
+    const NAME: &'static str = "Onnx Audio Plugin";
     const VENDOR: &'static str = "Akiyuki Okayasu";
     const URL: &'static str = env!("CARGO_PKG_HOMEPAGE");
     const EMAIL: &'static str = "akiyuki.okayasu@gmail.com";
@@ -162,15 +162,11 @@ impl Plugin for OnnxAudioPlugin {
             // let gain = self.params.gain.smoothed.next();
 
             for sample in channel_samples {
-                self.input_vec.fill(*sample);
-                // self.input_vec[[0, 0, 0, 0]] = *sample;
-                // dbg!(&self.input_vec);
+                self.input_vec[[0, 0, 0, 0]] = *sample;
                 let tensor = self.input_vec.clone().into_tensor();
                 let result = self.model.run(tvec![tensor.into()]).unwrap();
-                let to_show = result[0].to_array_view::<f32>().unwrap();
-                let s = to_show[[0, 0, 0, 0]];
-                // println!("result: {to_show}");
-                *sample = s;
+                let output_vec = result[0].to_array_view::<f32>().unwrap();
+                *sample = output_vec[[0, 0, 0, 0]];
             }
         }
 
@@ -184,17 +180,23 @@ impl ClapPlugin for OnnxAudioPlugin {
     const CLAP_MANUAL_URL: Option<&'static str> = Some(Self::URL);
     const CLAP_SUPPORT_URL: Option<&'static str> = None;
 
-    // Don't forget to change these features
-    const CLAP_FEATURES: &'static [ClapFeature] = &[ClapFeature::AudioEffect, ClapFeature::Stereo];
+    const CLAP_FEATURES: &'static [ClapFeature] = &[
+        ClapFeature::AudioEffect,
+        ClapFeature::Stereo,
+        ClapFeature::Mono,
+        ClapFeature::Utility,
+    ];
 }
 
 impl Vst3Plugin for OnnxAudioPlugin {
     const VST3_CLASS_ID: [u8; 16] = *b"onnxaudioplugin ";
 
-    // And don't forget to change these categories, see the docstring on `VST3_SUBCATEGORIES` for more
-    // information
-    const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] =
-        &[Vst3SubCategory::Fx, Vst3SubCategory::Dynamics];
+    const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] = &[
+        Vst3SubCategory::Fx,
+        Vst3SubCategory::Tools,
+        Vst3SubCategory::Stereo,
+        Vst3SubCategory::Mono,
+    ];
 }
 
 nih_export_clap!(OnnxAudioPlugin);
