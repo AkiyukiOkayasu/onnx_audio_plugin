@@ -1,5 +1,7 @@
 # Onnx Audio Plugin
 
+[![CI](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/actions/workflows/ci.yaml)
+
 Audio plug-in minimum example using ONNX.  
 This project is not product ready and is not practical. However, it is for anyone who wants to know about a minimum audio plug-in using ONNX.  
 
