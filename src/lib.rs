@@ -1,4 +1,5 @@
 use nih_plug::prelude::*;
+use std::io::BufReader;
 use std::sync::Arc;
 use tract_onnx::prelude::*;
 
@@ -14,9 +15,10 @@ struct OnnxAudioPluginParams {}
 
 impl Default for OnnxAudioPlugin {
     fn default() -> Self {
+        let onnx_model = include_bytes!("../linear.onnx");
         let model = onnx()
             // load the model
-            .model_for_path("../linear.onnx")
+            .model_for_read(&mut BufReader::new(&onnx_model[..]))
             .unwrap()
             // optimize the model
             .into_optimized()
