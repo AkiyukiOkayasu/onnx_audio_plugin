@@ -180,17 +180,23 @@ impl ClapPlugin for OnnxAudioPlugin {
     const CLAP_MANUAL_URL: Option<&'static str> = Some(Self::URL);
     const CLAP_SUPPORT_URL: Option<&'static str> = None;
 
-    // Don't forget to change these features
-    const CLAP_FEATURES: &'static [ClapFeature] = &[ClapFeature::AudioEffect, ClapFeature::Stereo];
+    const CLAP_FEATURES: &'static [ClapFeature] = &[
+        ClapFeature::AudioEffect,
+        ClapFeature::Stereo,
+        ClapFeature::Mono,
+        ClapFeature::Utility,
+    ];
 }
 
 impl Vst3Plugin for OnnxAudioPlugin {
     const VST3_CLASS_ID: [u8; 16] = *b"onnxaudioplugin ";
 
-    // And don't forget to change these categories, see the docstring on `VST3_SUBCATEGORIES` for more
-    // information
-    const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] =
-        &[Vst3SubCategory::Fx, Vst3SubCategory::Dynamics];
+    const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] = &[
+        Vst3SubCategory::Fx,
+        Vst3SubCategory::Tools,
+        Vst3SubCategory::Stereo,
+        Vst3SubCategory::Mono,
+    ];
 }
 
 nih_export_clap!(OnnxAudioPlugin);
