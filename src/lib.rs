@@ -14,7 +14,9 @@ struct OnnxAudioPluginParams {}
 
 impl Default for OnnxAudioPlugin {
     fn default() -> Self {
-        let onnx_model = include_bytes!("../linear.onnx");
+        // let onnx_model = include_bytes!("../linear.onnx");
+        // let onnx_model = include_bytes!("../sin.onnx");
+        let onnx_model = include_bytes!("../tanh.onnx");
         let model = onnx()
             // load the model
             .model_for_read(&mut BufReader::new(&onnx_model[..]))
