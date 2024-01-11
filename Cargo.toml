@@ -6,6 +6,7 @@ authors = ["Akiyuki Okayasu <akiyuki.okayasu@gmail.com>"]
 license = "GPLv2"
 homepage = "https://github.com/AkiyukiOkayasu/onnx_audio_plugin"
 description = "Audio plug-in example using ONNX."
+rust-version = "1.70.0"
 
 [workspace]
 members = ["xtask"]
@@ -16,7 +17,9 @@ crate-type = ["cdylib"]
 [dependencies]
 # Remove the `assert_process_allocs` feature to allow allocations on the audio
 # thread in debug builds.
-nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", features = ["assert_process_allocs"] }
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", features = [
+    "assert_process_allocs",
+] }
 tract-onnx = "0.20.22"
 # Uncomment the below line to disable the on-by-default VST3 feature to remove
 # the GPL compatibility requirement
