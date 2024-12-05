@@ -3225,7 +3225,10 @@ dependencies = [
 name = "onnx_plug_burn"
 version = "0.1.2"
 dependencies = [
+ "burn",
  "burn-import",
+ "burn-ndarray",
+ "nih_plug",
 ]
 
 [[package]]
