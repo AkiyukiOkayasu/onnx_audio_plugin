@@ -19,6 +19,28 @@ After installing [Rust](https://rustup.rs/), you can compile Onnx Audio Plugin a
 cargo xtask bundle onnx_audio_plugin --release
 ```
 
+### Install build plugin
+
+#### macOS
+
+```shell
+PLUGIN_NAME="Onnx Audio Plugin"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
+```
+
+### Validation
+
+#### CLAP
+
+```shell
+PLUGIN_NAME="Onnx Audio Plugin"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
+```
+
+#### VST3
+
+```shell
+PLUGIN_NAME="Onnx Audio Plugin"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+```
+
 ## ONNX
 
 [linear.onnx](linear.onnx) is a ONNX that does phase inversion using a minimum element.  
