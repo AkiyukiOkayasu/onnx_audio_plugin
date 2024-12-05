@@ -6,7 +6,7 @@ authors = ["Akiyuki Okayasu <akiyuki.okayasu@gmail.com>"]
 license = "GPLv2"
 homepage = "https://github.com/AkiyukiOkayasu/onnx_audio_plugin"
 description = "Audio plug-in example using ONNX."
-rust-version = "1.70.0"
+rust-version = "1.83.0"
 
 [workspace]
 members = ["xtask"]
