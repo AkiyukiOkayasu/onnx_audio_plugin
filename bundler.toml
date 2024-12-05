@@ -9,6 +9,3 @@ name = "Onnx Plug Tract"
 
 [onnx_plug_burn]
 name = "Onnx Plug Burn"
-
-[onnx_plug_candle]
-name = "Onnx Plug Candle"

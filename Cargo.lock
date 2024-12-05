@@ -3232,10 +3232,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "onnx_plug_candle"
-version = "0.1.2"
-
-[[package]]
 name = "onnx_plug_tract"
 version = "0.1.2"
 dependencies = [
