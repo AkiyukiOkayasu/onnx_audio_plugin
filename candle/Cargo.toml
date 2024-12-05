@@ -1,5 +1,5 @@
 [package]
-name = "onnx_plug_burn"
+name = "onnx_plug_candle"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -7,7 +7,7 @@ license.workspace = true
 homepage.workspace = true
 rust-version.workspace = true
 
-[dependencies]
+[lib]
+crate-type = ["cdylib"]
 
-[build-dependencies]
-burn-import = "0.15.0"
+[dependencies]

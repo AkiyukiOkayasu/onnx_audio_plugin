@@ -1,5 +1,5 @@
 [package]
-name = "onnx_audio_plugin_tract"
+name = "onnx_plug_tract"
 description = "ONNX audio plugin using tract"
 edition.workspace = true
 version.workspace = true
