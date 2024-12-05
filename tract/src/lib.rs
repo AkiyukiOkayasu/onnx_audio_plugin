@@ -5,7 +5,7 @@ use tract_onnx::prelude::*;
 
 struct OnnxAudioPlugin {
     params: Arc<OnnxAudioPluginParams>,
-    input_vec: tract_ndarray::Array4<f32>,
+    input_vec: tract_ndarray::Array1<f32>,
     model: RunnableModel<TypedFact, Box<dyn TypedOp>, Graph<TypedFact, Box<dyn TypedOp>>>,
 }
 
@@ -14,9 +14,10 @@ struct OnnxAudioPluginParams {}
 
 impl Default for OnnxAudioPlugin {
     fn default() -> Self {
-        // let onnx_model = include_bytes!("../linear.onnx");
-        // let onnx_model = include_bytes!("../sin.onnx");
-        let onnx_model = include_bytes!("../../onnx/tanh.onnx");
+        let onnx_model = include_bytes!("../../onnx/linear/linear.onnx");
+        // let onnx_model = include_bytes!("../../onnx/sin/sin.onnx");
+        // let onnx_model = include_bytes!("../../onnx/tanh/tanh.onnx");
+
         let model = onnx()
             // load the model
             .model_for_read(&mut BufReader::new(&onnx_model[..]))
@@ -30,7 +31,7 @@ impl Default for OnnxAudioPlugin {
 
         Self {
             params: Arc::new(OnnxAudioPluginParams::default()),
-            input_vec: tract_ndarray::Array4::<f32>::zeros((1, 1, 1, 1)),
+            input_vec: tract_ndarray::Array1::<f32>::zeros(1),
             model,
         }
     }
@@ -43,7 +44,7 @@ impl Default for OnnxAudioPluginParams {
 }
 
 impl Plugin for OnnxAudioPlugin {
-    const NAME: &'static str = "Onnx Audio Plugin";
+    const NAME: &'static str = "Onnx Plug Tract";
     const VENDOR: &'static str = "Akiyuki Okayasu";
     const URL: &'static str = env!("CARGO_PKG_HOMEPAGE");
     const EMAIL: &'static str = "akiyuki.okayasu@gmail.com";
@@ -115,11 +116,11 @@ impl Plugin for OnnxAudioPlugin {
     ) -> ProcessStatus {
         for channel_samples in buffer.iter_samples() {
             for sample in channel_samples {
-                self.input_vec[[0, 0, 0, 0]] = *sample;
+                self.input_vec[0] = *sample;
                 let v = self.input_vec.clone().into_tvalue();
                 let result = self.model.run(tvec!(v)).unwrap();
                 let output_vec = result[0].to_array_view::<f32>().unwrap();
-                *sample = output_vec[[0, 0, 0, 0]];
+                *sample = output_vec[0];
             }
         }
 
