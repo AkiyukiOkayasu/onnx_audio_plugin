@@ -16,9 +16,7 @@ You can download the VST3 and CLAP plug-ins from the [Release](https://github.co
 After installing [Rust](https://rustup.rs/), you can compile Onnx Audio Plugin as follows:
 
 ```shell
-cargo xtask bundle onnx_plug_tract --release;
-cargo xtask bundle onnx_plug_burn --release;
-cargo xtask bundle onnx_plug_candle --release;
+cargo xtask bundle -p onnx_plug_tract -p onnx_plug_burn --release
 ```
 
 ### Install build plugin
@@ -29,6 +27,10 @@ cargo xtask bundle onnx_plug_candle --release;
 PLUGIN_NAME="Onnx Plug Tract"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
 ```
 
+```shell
+PLUGIN_NAME="Onnx Plug Burn"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
+```
+
 ### Validation
 
 #### CLAP
@@ -37,10 +39,18 @@ PLUGIN_NAME="Onnx Plug Tract"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}
 PLUGIN_NAME="Onnx Plug Tract"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
 ```
 
+```shell
+PLUGIN_NAME="Onnx Plug Burn"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
+```
+
 #### VST3
 
 ```shell
 PLUGIN_NAME="Onnx Plug Tract"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+```
+
+```shell
+PLUGIN_NAME="Onnx Plug Burn"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
 ```
 
 ## ONNX
