@@ -1,0 +1,24 @@
+[package]
+name = "onnx_audio_plugin_tract"
+description = "ONNX audio plugin using tract"
+edition.workspace = true
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+nih_plug = { workspace = true, features = ["assert_process_allocs"] }
+tract-onnx = "0.21.8"
+
+[dev-dependencies]
+approx = "0.5.1"
+criterion = "0.5.1"
+
+[[bench]]
+name = "bench"
+harness = false

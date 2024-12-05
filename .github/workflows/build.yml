@@ -20,14 +20,18 @@ jobs:
   package:
     strategy:
       matrix:
-        include:     
-          - { name: ubuntu,       os: ubuntu-latest,   cross-target: '' }
-          - { name: macos-universal,    os: macos-latest,       cross-target: aarch64-apple-darwin }
-          - { name: windows,            os: windows-latest, cross-target: '' }
+        include:
+          - { name: ubuntu, os: ubuntu-latest, cross-target: "" }
+          - {
+              name: macos-universal,
+              os: macos-latest,
+              cross-target: aarch64-apple-darwin,
+            }
+          - { name: windows, os: windows-latest, cross-target: "" }
     name: Package plugin binaries
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: Swatinem/rust-cache@v2
 
       - name: Install dependencies

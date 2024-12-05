@@ -4,5 +4,8 @@
 # [package_name]
 # name = "Human Readable Plugin Name"  # defaults to <package_name>
 
-[onnx_test]
-name = "Onnx Audio Plugin"
+[onnx_audio_plugin_tract]
+name = "Onnx Audio Plugin Tract"
+
+[onnx_audio_plugin_burn]
+name = "Onnx Audio Plugin Burn"
