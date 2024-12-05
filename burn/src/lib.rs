@@ -2,7 +2,7 @@ mod model;
 
 use burn::tensor;
 use burn_ndarray::{NdArray, NdArrayDevice};
-use model::model::Model;
+use model::Model;
 use nih_plug::prelude::*;
 use std::sync::Arc;
 
@@ -12,7 +12,7 @@ struct OnnxAudioPlugin {
     model: Model<NdArray<f32>>,
 }
 
-#[derive(Params)]
+#[derive(Params, Default)]
 struct OnnxAudioPluginParams {}
 
 impl Default for OnnxAudioPlugin {
@@ -22,12 +22,6 @@ impl Default for OnnxAudioPlugin {
             device: NdArrayDevice::default(),
             model: Model::default(),
         }
-    }
-}
-
-impl Default for OnnxAudioPluginParams {
-    fn default() -> Self {
-        Self {}
     }
 }
 

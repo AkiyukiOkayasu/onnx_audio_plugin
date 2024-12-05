@@ -9,7 +9,7 @@ struct OnnxAudioPlugin {
     model: RunnableModel<TypedFact, Box<dyn TypedOp>, Graph<TypedFact, Box<dyn TypedOp>>>,
 }
 
-#[derive(Params)]
+#[derive(Params, Default)]
 struct OnnxAudioPluginParams {}
 
 impl Default for OnnxAudioPlugin {
@@ -34,12 +34,6 @@ impl Default for OnnxAudioPlugin {
             input_vec: tract_ndarray::Array1::<f32>::zeros(1),
             model,
         }
-    }
-}
-
-impl Default for OnnxAudioPluginParams {
-    fn default() -> Self {
-        Self {}
     }
 }
 
