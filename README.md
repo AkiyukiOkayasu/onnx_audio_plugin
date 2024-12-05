@@ -29,22 +29,18 @@ cargo xtask bundle onnx_plug_candle --release;
 PLUGIN_NAME="Onnx Plug Tract"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
 ```
 
-```shell
-PLUGIN_NAME="Onnx Plug Burn"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
-```
-
 ### Validation
 
 #### CLAP
 
 ```shell
-PLUGIN_NAME="Onnx Audio Plugin Tract"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
+PLUGIN_NAME="Onnx Plug Tract"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
 ```
 
 #### VST3
 
 ```shell
-PLUGIN_NAME="Onnx Audio Plugin Tract"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+PLUGIN_NAME="Onnx Plug Tract"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
 ```
 
 ## ONNX
