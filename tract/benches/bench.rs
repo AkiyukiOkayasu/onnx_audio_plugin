@@ -12,7 +12,7 @@ fn pre_process(c: &mut Criterion) {
 }
 
 fn onnxtest(c: &mut Criterion) {
-    let onnx_model = include_bytes!("../linear.onnx");
+    let onnx_model = include_bytes!("../../onnx/linear.onnx");
     let model = onnx()
         // load the model
         .model_for_read(&mut BufReader::new(&onnx_model[..]))
