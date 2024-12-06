@@ -12,7 +12,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 nih_plug = { workspace = true, features = ["assert_process_allocs"] }
-burn = "0.15.0"
+burn = { version = "0.15.0", features = ["std", "accelerate"] }
 burn-ndarray = "0.15.0"
 
 [build-dependencies]

@@ -3,6 +3,12 @@
 version = 4
 
 [[package]]
+name = "accelerate-src"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "415ed64958754dbe991900f3940677e6a7eefb4d7367afd70d642677b0c7d19d"
+
+[[package]]
 name = "addr2line"
 version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -331,6 +337,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6099cdc01846bc367c4e7dd630dc5966dccf36b652fae7a74e17b640411a91b2"
 
 [[package]]
+name = "blas-src"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b95e83dc868db96e69795c0213143095f03de9dd3252f205d4ac716e4076a7e0"
+dependencies = [
+ "accelerate-src",
+]
+
+[[package]]
 name = "block"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -582,6 +597,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9df139ffaf1f3b5805dcc5e531e7fa3119ad52dcc5b42883661fbf0a694cd82b"
 dependencies = [
  "atomic_float 1.1.0",
+ "blas-src",
  "burn-autodiff",
  "burn-common",
  "burn-tensor",
@@ -741,9 +757,11 @@ version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d5b18de020c2729dbf7ac390325312644808b6ba9b7962f1f724e9185b1d53c7"
 dependencies = [
+ "accelerate-src",
  "byteorder",
  "gemm",
  "half",
+ "libc",
  "memmap2",
  "num-traits",
  "num_cpus",
@@ -798,6 +816,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0abae9be0aaf9ea96a3b1b8b1b55c602ca751eba1b1500220cea4ecbafe7c0d5"
 dependencies = [
  "rustversion",
+]
+
+[[package]]
+name = "cblas-sys"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b6feecd82cce51b0204cf063f0041d69f24ce83f680d87514b004248e7b0fa65"
+dependencies = [
+ "libc",
 ]
 
 [[package]]
@@ -2922,6 +2949,8 @@ version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "882ed72dce9365842bf196bdeedf5055305f11fc8c03dee7bb0194a6cad34841"
 dependencies = [
+ "cblas-sys",
+ "libc",
  "matrixmultiply",
  "num-complex",
  "num-integer",
