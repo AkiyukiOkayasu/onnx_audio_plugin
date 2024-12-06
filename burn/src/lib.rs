@@ -98,6 +98,7 @@ impl Plugin for OnnxAudioPlugin {
     ) -> ProcessStatus {
         for channel_samples in buffer.iter_samples() {
             for sample in channel_samples {
+                // TODO burnのTensorを直接操作することはできないため、サンプルごとにTensorに変換して処理している。heapに確保せずに処理する方法があれば書き換えたい。
                 let input = tensor::Tensor::<NdArray<f32>, 1>::from_floats([*sample], &self.device);
                 let output = self.model.forward(input);
                 *sample = output.into_data().as_slice::<f32>().unwrap()[0];
