@@ -11,6 +11,11 @@ env:
   CARGO_TERM_COLOR: always
   CARGO_INCREMENTAL: 0
 
+defaults:
+  run:
+    # This otherwise gets run under dash which does not support brace expansion
+    shell: bash
+
 jobs:
   # We'll only package the plugins with an entry in bundler.toml
   package:
