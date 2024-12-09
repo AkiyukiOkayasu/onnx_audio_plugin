@@ -22,8 +22,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - { name: ubuntu-20.04, os: ubuntu-20.04, cross-target: "" }
-          - { name: macos-universal, os: macos-latest, cross-target: "" }
+          - { name: ubuntu, os: ubuntu-latest, cross-target: "" }
+          - { name: macos, os: macos-latest, cross-target: "" }
           - { name: windows, os: windows-latest, cross-target: "" }
     name: Package plugin binaries
     runs-on: ${{ matrix.os }}
@@ -67,8 +67,18 @@ jobs:
             cross_target=${{ matrix.cross-target }}
             cargo xtask bundle "${package_args[@]}" --release
           fi
-      - name: Install pluginval
+      - name: Install pluginval on ubuntu
+        if: startsWith(matrix.os, 'ubuntu')
         run: curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
+      - name: Install pluginval on macOS
+        if: startsWith(matrix.os, 'macos')
+        run: curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_macOS.zip" -o pluginval.zip; unzip pluginval
+      - name: Install pluginval on Windows
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          choco install curl -y
+          curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Windows.zip" -o pluginval.zip
+          tar -xf pluginval.zip
       - name: Validate VST3 plugin
         run: ./pluginval --verbose --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
       # TODO validate clap plugins with clap-validator https://github.com/free-audio/clap-validator
