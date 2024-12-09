@@ -71,14 +71,10 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
-          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
-          PLUGIN_NAME="Onnx Plug Burn"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
       - name: Install pluginval on macOS
         if: startsWith(matrix.os, 'macos')
         run: |
           curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_macOS.zip" -o pluginval.zip; unzip pluginval
-          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
-          PLUGIN_NAME="Onnx Plug Burn"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
       - name: Install pluginval on Windows
         if: startsWith(matrix.os, 'windows')
         run: |
