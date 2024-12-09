@@ -3,3 +3,7 @@ extend-exclude = ["**/*.onnx"]
 
 [default.extend-words]
 NdArray = "NdArray"
+Nd = "Nd"
+
+[default.extend-identifiers]
+NdArray = "NdArray"
