@@ -31,6 +31,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libasound2-dev libgl-dev libjack-dev libxcb1-dev libxcb-icccm4-dev libxcursor-dev libxkbcommon-dev libxcb-shape0-dev libxcb-xfixes0-dev
+      - name: Setup macOS x86_64 target
+        if: startsWith(matrix.os, 'macos')
+        run: rustup target add x86_64-apple-darwin
       - name: Print stable Rust version
         run: rustc --version
       - name: Formatter
