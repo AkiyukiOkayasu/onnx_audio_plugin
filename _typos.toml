@@ -1,5 +1,5 @@
 [files]
-extend-exclude = ["**/*.onnx"]
+extend-exclude = ["**/*.onnx", "**/*.lock"]
 
 [default.extend-words]
 NdArray = "NdArray"
