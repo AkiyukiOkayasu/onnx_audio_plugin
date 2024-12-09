@@ -2,37 +2,86 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
-    types: [ opened, synchronize, reopened ]
-
+    paths: ["**/*.rs", "**/*.toml", "**/*.yaml", "**/*.yml", "**/*.onnx"]
+    branches: ["main"]
+    types: [opened, synchronize, reopened]
 
 env:
   CARGO_TERM_COLOR: always
   CARGO_INCREMENTAL: 0
 
+defaults:
+  run:
+    # This otherwise gets run under dash which does not support brace expansion
+    shell: bash
+
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  # We'll only package the plugins with an entry in bundler.toml
+  package:
+    strategy:
+      matrix:
+        include:
+          - { name: ubuntu, os: ubuntu-latest, cross-target: "" }
+          - { name: macos, os: macos-latest, cross-target: "" }
+          - { name: windows, os: windows-latest, cross-target: "" }
+    name: Package plugin binaries
+    runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: Swatinem/rust-cache@v2    
-    - name: Print stable Rust version
-      run: rustc --version
-    - name: Formatter
-      run: cargo fmt -- --check
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
-    - name: Clippy      
-      run: cargo clippy -v --all-targets
-    - name: Bundle
-      run: cargo xtask bundle onnx_audio_plugin --release
-    - name: Install pluginval
-      run: curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
-    - name: Validate VST3 plugin
-      run: ./pluginval --verbose --strictness-level 5 target/bundled/onnx_audio_plugin.vst3    
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install dependencies
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libgl-dev libjack-dev libxcb1-dev libxcb-icccm4-dev libxcursor-dev libxkbcommon-dev libxcb-shape0-dev libxcb-xfixes0-dev
+      - name: Setup macOS x86_64 target
+        if: startsWith(matrix.os, 'macos')
+        run: rustup target add x86_64-apple-darwin
+      - name: Formatter
+        run: cargo fmt -- --check
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
+      - name: Clippy
+        run: cargo clippy -v --all-targets
+      - name: Package all targets from bundler.toml
+        # Instead of hardcoding which targets to build and package, we'll
+        # package everything that's got en entry in the `bundler.toml` file
+        run: |
+          # Building can be sped up by specifying all packages in one go
+          package_args=()
+          for package in $(cargo xtask known-packages); do
+            package_args+=("-p" "$package")
+          done
+
+          runner_name=${{ matrix.name }}
+          if [[ $runner_name = 'macos-universal' ]]; then
+            export MACOSX_DEPLOYMENT_TARGET=13.7
+            cargo xtask bundle-universal "${package_args[@]}" --release
+          else
+            cross_target=${{ matrix.cross-target }}
+            cargo xtask bundle "${package_args[@]}" --release
+          fi
+      - name: Validate VST3 on Ubuntu
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
+          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval --verbose --strictness-level 5 target/bundled/"${PLUGIN_NAME}".vst3
+          PLUGIN_NAME="Onnx Plug Burn"; ./pluginval --verbose --strictness-level 5 target/bundled/"${PLUGIN_NAME}".vst3
+      - name: Validate VST3 on macOS
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_macOS.zip" -o pluginval.zip; unzip pluginval
+          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval.app/Contents/MacOS/pluginval --verbose --strictness-level 5 target/bundled/"${PLUGIN_NAME}".vst3
+          PLUGIN_NAME="Onnx Plug Burn"; ./pluginval.app/Contents/MacOS/pluginval --verbose --strictness-level 5 target/bundled/"${PLUGIN_NAME}".vst3
+      - name: Validate VST3 on Windows
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Windows.zip -OutFile pluginval.zip"
+          powershell -Command "Expand-Archive pluginval.zip -DestinationPath ."
+          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval.exe --verbose --strictness-level 5 target/bundled/"${PLUGIN_NAME}".vst3
+          PLUGIN_NAME="Onnx Plug Burn"; ./pluginval.exe --verbose --strictness-level 5 target/bundled/"${PLUGIN_NAME}".vst3
