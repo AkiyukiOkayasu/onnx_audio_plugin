@@ -67,18 +67,26 @@ jobs:
             cross_target=${{ matrix.cross-target }}
             cargo xtask bundle "${package_args[@]}" --release
           fi
-      - name: Install pluginval on ubuntu
+      - name: Install pluginval on Ubuntu
         if: startsWith(matrix.os, 'ubuntu')
-        run: curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
+        run: |
+          curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Linux.zip" -o pluginval.zip; unzip pluginval
+          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+          PLUGIN_NAME="Onnx Plug Burn"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
       - name: Install pluginval on macOS
         if: startsWith(matrix.os, 'macos')
-        run: curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_macOS.zip" -o pluginval.zip; unzip pluginval
+        run: |
+          curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_macOS.zip" -o pluginval.zip; unzip pluginval
+          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+          PLUGIN_NAME="Onnx Plug Burn"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
       - name: Install pluginval on Windows
         if: startsWith(matrix.os, 'windows')
         run: |
           choco install curl -y
           curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Windows.zip" -o pluginval.zip
           tar -xf pluginval.zip
-      - name: Validate VST3 plugin
-        run: ./pluginval --verbose --strictness-level 5 target/bundled/onnx_audio_plugin.vst3
+      - name: Validate VST3 plugins
+        run: |
+          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+          PLUGIN_NAME="Onnx Plug Burn"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
       # TODO validate clap plugins with clap-validator https://github.com/free-audio/clap-validator
