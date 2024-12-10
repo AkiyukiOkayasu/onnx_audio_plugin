@@ -16,7 +16,7 @@ You can download the VST3 and CLAP plug-ins from the [Release](https://github.co
 After installing [Rust](https://rustup.rs/), you can compile Onnx Audio Plugin as follows:
 
 ```shell
-cargo xtask bundle onnx_audio_plugin --release
+cargo xtask bundle -p onnx_plug_tract -p onnx_plug_burn --release
 ```
 
 ### Install build plugin
@@ -24,7 +24,11 @@ cargo xtask bundle onnx_audio_plugin --release
 #### macOS
 
 ```shell
-PLUGIN_NAME="Onnx Audio Plugin"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
+PLUGIN_NAME="Onnx Plug Tract"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
+```
+
+```shell
+PLUGIN_NAME="Onnx Plug Burn"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
 ```
 
 ### Validation
@@ -32,13 +36,21 @@ PLUGIN_NAME="Onnx Audio Plugin"; rsync -ahv --delete target/bundled/${PLUGIN_NAM
 #### CLAP
 
 ```shell
-PLUGIN_NAME="Onnx Audio Plugin"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
+PLUGIN_NAME="Onnx Plug Tract"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
+```
+
+```shell
+PLUGIN_NAME="Onnx Plug Burn"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
 ```
 
 #### VST3
 
 ```shell
-PLUGIN_NAME="Onnx Audio Plugin"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+PLUGIN_NAME="Onnx Plug Tract"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+```
+
+```shell
+PLUGIN_NAME="Onnx Plug Burn"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
 ```
 
 ## ONNX
