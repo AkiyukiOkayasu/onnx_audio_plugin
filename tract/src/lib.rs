@@ -15,8 +15,6 @@ struct OnnxAudioPluginParams {}
 impl Default for OnnxAudioPlugin {
     fn default() -> Self {
         let onnx_model = include_bytes!("../../onnx/linear/linear.onnx");
-        // let onnx_model = include_bytes!("../../onnx/sin/sin.onnx");
-        // let onnx_model = include_bytes!("../../onnx/tanh/tanh.onnx");
 
         let model = onnx()
             // load the model
