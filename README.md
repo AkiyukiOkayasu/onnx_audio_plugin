@@ -1,4 +1,4 @@
-# Onnx Audio Plugin
+# ONNX Audio Plugin
 
 [![CI](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/actions/workflows/ci.yaml)
 
@@ -25,7 +25,7 @@ To check ONNX graphs, [Netron](https://netron.app/) is a quick and easy way to d
 
 ## Build (For Developers)
 
-If you want to build the Onnx Audio Plugin manually, follow these steps after installing [Rust](https://rustup.rs/):
+If you want to build manually, follow these steps after installing [Rust](https://rustup.rs/):
 
 ```shell
 cargo xtask bundle -p onnx_plug_tract -p onnx_plug_burn --release
