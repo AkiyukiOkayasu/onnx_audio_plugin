@@ -3252,7 +3252,7 @@ dependencies = [
 
 [[package]]
 name = "onnx_plug_burn"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "burn",
  "burn-import",
@@ -3262,7 +3262,7 @@ dependencies = [
 
 [[package]]
 name = "onnx_plug_tract"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "approx",
  "criterion",
