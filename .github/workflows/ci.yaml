@@ -4,6 +4,7 @@ on:
   push:
     branches: ["main"]
   pull_request:
+    paths: ["**/*.rs", "**/*.toml", "**/*.yaml", "**/*.yml", "**/*.onnx"]
     branches: ["main"]
     types: [opened, synchronize, reopened]
 
@@ -83,6 +84,6 @@ jobs:
           tar -xf pluginval.zip
       - name: Validate VST3 plugins
         run: |
-          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
-          PLUGIN_NAME="Onnx Plug Burn"; ./pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+          PLUGIN_NAME="Onnx Plug Tract"; ./pluginval --verbose --strictness-level 5 target/bundled/"${PLUGIN_NAME}".vst3
+          PLUGIN_NAME="Onnx Plug Burn"; ./pluginval --verbose --strictness-level 5 target/bundled/"${PLUGIN_NAME}".vst3
       # TODO validate clap plugins with clap-validator https://github.com/free-audio/clap-validator
