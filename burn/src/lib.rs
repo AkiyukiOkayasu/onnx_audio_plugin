@@ -1,49 +1,32 @@
+mod model;
+
+use burn::tensor;
+use burn_ndarray::{NdArray, NdArrayDevice};
+use model::Model;
 use nih_plug::prelude::*;
-use std::io::BufReader;
 use std::sync::Arc;
-use tract_onnx::prelude::*;
 
 struct OnnxAudioPlugin {
     params: Arc<OnnxAudioPluginParams>,
-    input_vec: tract_ndarray::Array4<f32>,
-    model: RunnableModel<TypedFact, Box<dyn TypedOp>, Graph<TypedFact, Box<dyn TypedOp>>>,
+    device: NdArrayDevice,
+    model: Model<NdArray<f32>>,
 }
 
-#[derive(Params)]
+#[derive(Params, Default)]
 struct OnnxAudioPluginParams {}
 
 impl Default for OnnxAudioPlugin {
     fn default() -> Self {
-        // let onnx_model = include_bytes!("../linear.onnx");
-        // let onnx_model = include_bytes!("../sin.onnx");
-        let onnx_model = include_bytes!("../tanh.onnx");
-        let model = onnx()
-            // load the model
-            .model_for_read(&mut BufReader::new(&onnx_model[..]))
-            .unwrap()
-            // optimize the model
-            .into_optimized()
-            .unwrap()
-            // make the model runnable and fix its inputs and outputs
-            .into_runnable()
-            .unwrap();
-
         Self {
             params: Arc::new(OnnxAudioPluginParams::default()),
-            input_vec: tract_ndarray::Array4::<f32>::zeros((1, 1, 1, 1)),
-            model,
+            device: NdArrayDevice::default(),
+            model: Model::default(),
         }
     }
 }
 
-impl Default for OnnxAudioPluginParams {
-    fn default() -> Self {
-        Self {}
-    }
-}
-
 impl Plugin for OnnxAudioPlugin {
-    const NAME: &'static str = "Onnx Audio Plugin";
+    const NAME: &'static str = "Onnx Plug Burn";
     const VENDOR: &'static str = "Akiyuki Okayasu";
     const URL: &'static str = env!("CARGO_PKG_HOMEPAGE");
     const EMAIL: &'static str = "akiyuki.okayasu@gmail.com";
@@ -115,11 +98,10 @@ impl Plugin for OnnxAudioPlugin {
     ) -> ProcessStatus {
         for channel_samples in buffer.iter_samples() {
             for sample in channel_samples {
-                self.input_vec[[0, 0, 0, 0]] = *sample;
-                let v = self.input_vec.clone().into_tvalue();
-                let result = self.model.run(tvec!(v)).unwrap();
-                let output_vec = result[0].to_array_view::<f32>().unwrap();
-                *sample = output_vec[[0, 0, 0, 0]];
+                // TODO burnのTensorを直接操作することはできないため、サンプルごとにTensorに変換して処理している。heapに確保せずに処理する方法があれば書き換えたい。
+                let input = tensor::Tensor::<NdArray<f32>, 1>::from_floats([*sample], &self.device);
+                let output = self.model.forward(input);
+                *sample = output.into_data().as_slice::<f32>().unwrap()[0];
             }
         }
 
@@ -128,7 +110,7 @@ impl Plugin for OnnxAudioPlugin {
 }
 
 impl ClapPlugin for OnnxAudioPlugin {
-    const CLAP_ID: &'static str = "com.groundless-electronics.onnx-audio-plugin";
+    const CLAP_ID: &'static str = "com.groundless-electronics.onnx-plug-burn";
     const CLAP_DESCRIPTION: Option<&'static str> = Some("Audio plug-in example using ONNX");
     const CLAP_MANUAL_URL: Option<&'static str> = Some(Self::URL);
     const CLAP_SUPPORT_URL: Option<&'static str> = None;
@@ -142,7 +124,7 @@ impl ClapPlugin for OnnxAudioPlugin {
 }
 
 impl Vst3Plugin for OnnxAudioPlugin {
-    const VST3_CLASS_ID: [u8; 16] = *b"onnxaudioplugin ";
+    const VST3_CLASS_ID: [u8; 16] = *b"onnxpluginburn  ";
 
     const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] = &[
         Vst3SubCategory::Fx,

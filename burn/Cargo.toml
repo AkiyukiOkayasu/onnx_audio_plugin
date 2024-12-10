@@ -1,0 +1,19 @@
+[package]
+name = "onnx_plug_burn"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+homepage.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+nih_plug = { workspace = true, features = ["assert_process_allocs"] }
+burn = { version = "0.15.0", features = ["std", "accelerate"] }
+burn-ndarray = "0.15.0"
+
+[build-dependencies]
+burn-import = "0.15.0"

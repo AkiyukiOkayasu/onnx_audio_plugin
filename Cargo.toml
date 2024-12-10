@@ -1,33 +1,22 @@
-[package]
-name = "onnx_audio_plugin"
-version = "0.1.2"
+[workspace]
+resolver = "2"
+members = ["xtask", "tract", "burn"]
+
+[workspace.package]
+version = "0.2.0"
 edition = "2021"
 authors = ["Akiyuki Okayasu <akiyuki.okayasu@gmail.com>"]
 license = "GPLv2"
 homepage = "https://github.com/AkiyukiOkayasu/onnx_audio_plugin"
-description = "Audio plug-in example using ONNX."
+description = "Audio plug-in packages using ONNX."
 rust-version = "1.83.0"
 
-[workspace]
-members = ["xtask"]
-
-[lib]
-crate-type = ["cdylib"]
-
-[dependencies]
+[workspace.dependencies]
 # Remove the `assert_process_allocs` feature to allow allocations on the audio
 # thread in debug builds.
 nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", features = [
     "assert_process_allocs",
 ] }
-tract-onnx = "0.21.8"
-# Uncomment the below line to disable the on-by-default VST3 feature to remove
-# the GPL compatibility requirement
-# nih_plug = { git = "https://github.com/robbert-vdh/nih-plug.git", default_features = false, features = ["assert_process_allocs"] }
-
-[dev-dependencies]
-approx = "0.5.1"
-criterion = "0.5.1"
 
 [profile.release]
 # Rust Performance Book
@@ -41,7 +30,3 @@ strip = "symbols"
 inherits = "release"
 debug = true
 strip = "none"
-
-[[bench]]
-name = "bench"
-harness = false

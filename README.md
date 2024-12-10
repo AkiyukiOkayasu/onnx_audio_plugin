@@ -2,21 +2,33 @@
 
 [![CI](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/actions/workflows/ci.yaml)
 
-Audio plug-in minimum example using ONNX.  
-This project is not product ready and is not practical. However, it is for anyone who wants to know about a minimum audio plug-in using ONNX.  
+This is a minimal example of using ONNX in an audio plugin. There are two versions: one using [Tract](https://github.com/sonos/tract) and the other using [Burn](https://github.com/tracel-ai/burn) for ONNX execution.  
 
-If you are looking for practicality then you may want to check out [RTNeural](https://github.com/jatinchowdhury18/RTNeural).
+This project is not production-ready and is not practical. However, it is intended for anyone who wants to learn about a minimal audio plugin using ONNX. If you are looking for practicality then you may want to check out [RTNeural](https://github.com/jatinchowdhury18/RTNeural).
 
-## Install
+## Features
+
+- Uses ONNX models for audio processing
+- Two implementations: one using [Tract](https://github.com/sonos/tract) and the other using [Burn](https://github.com/tracel-ai/burn)
+- Supports VST3 and CLAP plugin formats
+
+## Installation
 
 You can download the VST3 and CLAP plug-ins from the [Release](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/releases/latest).
 
-## Building
+## ONNX
 
-After installing [Rust](https://rustup.rs/), you can compile Onnx Audio Plugin as follows:
+[linear.onnx](onnx/linear/linear.onnx) is an ONNX model that performs phase inversion using a minimal element.
+![linear](https://github.com/user-attachments/assets/a168945b-0c7a-4094-ab4d-16021af70c82)
+
+To check ONNX graphs, [Netron](https://netron.app/) is a quick and easy way to do so. The `linear.onnx` model was created with [linear.py](onnx/linear/linear.py).
+
+## Build (For Developers)
+
+If you want to build the Onnx Audio Plugin manually, follow these steps after installing [Rust](https://rustup.rs/):
 
 ```shell
-cargo xtask bundle onnx_audio_plugin --release
+cargo xtask bundle -p onnx_plug_tract -p onnx_plug_burn --release
 ```
 
 ### Install build plugin
@@ -24,7 +36,15 @@ cargo xtask bundle onnx_audio_plugin --release
 #### macOS
 
 ```shell
-PLUGIN_NAME="Onnx Audio Plugin"; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap; rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
+PLUGIN_NAME="Onnx Plug Tract"
+rsync -ahv --delete target/bundled/${PLUGIN_NAME}.clap/ ~/Library/Audio/Plug-Ins/CLAP/${PLUGIN_NAME}.clap
+rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
+```
+
+```shell
+PLUGIN_NAME="Onnx Plug Burn"
+rsync -ahv --delete target/bundled/"${PLUGIN_NAME}".clap/ ~/Library/Audio/Plug-Ins/CLAP/"${PLUGIN_NAME}".clap
+rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
 ```
 
 ### Validation
@@ -32,19 +52,23 @@ PLUGIN_NAME="Onnx Audio Plugin"; rsync -ahv --delete target/bundled/${PLUGIN_NAM
 #### CLAP
 
 ```shell
-PLUGIN_NAME="Onnx Audio Plugin"; clap-validator validate target/bundled/${PLUGIN_NAME}.clap
+PLUGIN_NAME="Onnx Plug Tract"
+clap-validator validate target/bundled/"${PLUGIN_NAME}".clap
+```
+
+```shell
+PLUGIN_NAME="Onnx Plug Burn"
+clap-validator validate target/bundled/"${PLUGIN_NAME}".clap
 ```
 
 #### VST3
 
 ```shell
-PLUGIN_NAME="Onnx Audio Plugin"; pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+PLUGIN_NAME="Onnx Plug Tract"
+pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
 ```
 
-## ONNX
-
-[linear.onnx](linear.onnx) is a ONNX that does phase inversion using a minimum element.  
-![linearonnx](https://user-images.githubusercontent.com/6957368/223927260-67f8b17d-13da-4b6b-a651-b9e236d3bc17.png)  
-
-To check ONNX graphs, [Netron](https://netron.app/) is a quick and easy way to do so.  
-linear.onnx has been created with [LinearONNX.ipynb](LinearONNX.ipynb).
+```shell
+PLUGIN_NAME="Onnx Plug Burn"
+pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+```
