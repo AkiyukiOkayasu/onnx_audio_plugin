@@ -1,5 +1,10 @@
 //! build.rsでONNXから変換したモデルをmoduleにしたもの
 //!
 
-include!(concat!(env!("OUT_DIR"), "/model/linear.rs"));
-// TODO tanhやsinなどの他のモデルも追加する
+pub mod tanh {
+    include!(concat!(env!("OUT_DIR"), "/model/tanh.rs"));
+}
+
+pub mod linear {
+    include!(concat!(env!("OUT_DIR"), "/model/linear.rs"));
+}

@@ -2,28 +2,20 @@ mod model;
 
 use burn::tensor;
 use burn_ndarray::{NdArray, NdArrayDevice};
-use model::Model;
+use model::{linear, tanh};
 use nih_plug::prelude::*;
 use std::sync::Arc;
 
+#[derive(Default)]
 struct OnnxAudioPlugin {
     params: Arc<OnnxAudioPluginParams>,
     device: NdArrayDevice,
-    model: Model<NdArray<f32>>,
+    model: linear::Model<NdArray<f32>>,
+    // model: tanh::Model<NdArray<f32>>,
 }
 
 #[derive(Params, Default)]
 struct OnnxAudioPluginParams {}
-
-impl Default for OnnxAudioPlugin {
-    fn default() -> Self {
-        Self {
-            params: Arc::new(OnnxAudioPluginParams::default()),
-            device: NdArrayDevice::default(),
-            model: Model::default(),
-        }
-    }
-}
 
 impl Plugin for OnnxAudioPlugin {
     const NAME: &'static str = "Onnx Plug Burn";
@@ -99,8 +91,17 @@ impl Plugin for OnnxAudioPlugin {
         for channel_samples in buffer.iter_samples() {
             for sample in channel_samples {
                 // TODO burnのTensorを直接操作することはできないため、サンプルごとにTensorに変換して処理している。heapに確保せずに処理する方法があれば書き換えたい。
+
+                // Linearモデルの場合 1階tensor
                 let input = tensor::Tensor::<NdArray<f32>, 1>::from_floats([*sample], &self.device);
+
+                // Tanhモデルの場合 2階tensor
+                // let input =
+                //     tensor::Tensor::<NdArray<f32>, 2>::from_floats([[*sample]], &self.device);
+
+                // ONNXモデルの推論
                 let output = self.model.forward(input);
+
                 *sample = output.into_data().as_slice::<f32>().unwrap()[0];
             }
         }
