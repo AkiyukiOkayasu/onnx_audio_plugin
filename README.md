@@ -18,10 +18,17 @@ You can download the VST3 and CLAP plug-ins from the [Release](https://github.co
 
 ## ONNX
 
-[linear.onnx](onnx/linear/linear.onnx) is an ONNX model that performs phase inversion using a minimal element.
-![linear](https://github.com/user-attachments/assets/a168945b-0c7a-4094-ab4d-16021af70c82)
+### linear.onnx
 
-To check ONNX graphs, [Netron](https://netron.app/) is a quick and easy way to do so. The `linear.onnx` model was created with [linear.py](onnx/linear/linear.py).
+[linear.onnx](onnx/linear.onnx) is an ONNX model that performs phase inversion using minimal elements. This model is used by default. It was created using [linear.py](onnx/linear.py).
+
+### tanh.onnx
+
+[tanh.onnx](onnx/tanh.onnx) is an ONNX model that mimics the hyperbolic tangent (tanh) function. This model is used for non-linear audio processing. It was created using [tanh.py](onnx/tanh.py).
+
+### Visualizing ONNX Models
+
+To visualize ONNX graphs, [Netron](https://netron.app/) is a quick and easy way to do so. Netron allows you to visually inspect the structure of ONNX models.
 
 ## Build (For Developers)
 
