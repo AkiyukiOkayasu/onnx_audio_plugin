@@ -40,7 +40,6 @@ impl Plugin for OnnxAudioPlugin {
     const VENDOR: &'static str = "Akiyuki Okayasu";
     const URL: &'static str = env!("CARGO_PKG_HOMEPAGE");
     const EMAIL: &'static str = "akiyuki.okayasu@gmail.com";
-
     const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
     // The first audio IO layout is used as the default. The other layouts may be selected either
