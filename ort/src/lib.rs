@@ -1,24 +1,40 @@
-mod model;
-
-use burn::tensor;
-use burn_ndarray::{NdArray, NdArrayDevice};
-use model::{linear, tanh};
+use ndarray::{Array0, Array1};
 use nih_plug::prelude::*;
+use ort::session::{builder::GraphOptimizationLevel, Session};
+use ort::value::Tensor;
 use std::sync::Arc;
 
-#[derive(Default)]
 struct OnnxAudioPlugin {
     params: Arc<OnnxAudioPluginParams>,
-    device: NdArrayDevice,
-    model: linear::Model<NdArray<f32>>,
-    // model: tanh::Model<NdArray<f32>>,
+    // input_vec: tract_ndarray::Array1<f32>,
+    model: Session,
 }
 
 #[derive(Params, Default)]
 struct OnnxAudioPluginParams {}
 
+impl Default for OnnxAudioPlugin {
+    fn default() -> Self {
+        let onnx_model = include_bytes!("../../onnx/linear.onnx");
+        let model = Session::builder()
+            .unwrap()
+            .with_optimization_level(GraphOptimizationLevel::Level3)
+            .unwrap()
+            .with_intra_threads(4)
+            .unwrap()
+            .commit_from_memory(onnx_model)
+            .unwrap();
+
+        Self {
+            params: Arc::new(OnnxAudioPluginParams::default()),
+            // input_vec: tract_ndarray::Array1::<f32>::zeros(1),
+            model,
+        }
+    }
+}
+
 impl Plugin for OnnxAudioPlugin {
-    const NAME: &'static str = "Onnx Plug Burn";
+    const NAME: &'static str = "Onnx Plug Ort";
     const VENDOR: &'static str = "Akiyuki Okayasu";
     const URL: &'static str = env!("CARGO_PKG_HOMEPAGE");
     const EMAIL: &'static str = "akiyuki.okayasu@gmail.com";
@@ -89,19 +105,12 @@ impl Plugin for OnnxAudioPlugin {
     ) -> ProcessStatus {
         for channel_samples in buffer.iter_samples() {
             for sample in channel_samples {
-                // TODO burnのTensorを直接操作することはできないため、サンプルごとにTensorに変換して処理している。heapに確保せずに処理する方法があれば書き換えたい。
-
-                // Linearモデルの場合 1階tensor
-                let input = tensor::Tensor::<NdArray<f32>, 1>::from_floats([*sample], &self.device);
-
-                // Tanhモデルの場合 2階tensor
-                // let input =
-                //     tensor::Tensor::<NdArray<f32>, 2>::from_floats([[*sample]], &self.device);
-
-                // ONNXモデルの推論
-                let output = self.model.forward(input);
-
-                *sample = output.into_data().as_slice::<f32>().unwrap()[0];
+                let output = self
+                    .model
+                    .run(ort::inputs![Array1::from_vec(vec![*sample])].unwrap())
+                    .unwrap();
+                let s = unsafe { &output[0].data_ptr().unwrap().cast::<f32>().read() };
+                *sample = *s;
             }
         }
 
@@ -110,7 +119,7 @@ impl Plugin for OnnxAudioPlugin {
 }
 
 impl ClapPlugin for OnnxAudioPlugin {
-    const CLAP_ID: &'static str = "com.groundless-electronics.onnx-plug-burn";
+    const CLAP_ID: &'static str = "com.groundless-electronics.onnx-plug-ort";
     const CLAP_DESCRIPTION: Option<&'static str> = Some("Audio plug-in example using ONNX");
     const CLAP_MANUAL_URL: Option<&'static str> = Some(Self::URL);
     const CLAP_SUPPORT_URL: Option<&'static str> = None;
@@ -124,7 +133,7 @@ impl ClapPlugin for OnnxAudioPlugin {
 }
 
 impl Vst3Plugin for OnnxAudioPlugin {
-    const VST3_CLASS_ID: [u8; 16] = *b"onnxpluginburn  ";
+    const VST3_CLASS_ID: [u8; 16] = *b"onnxpluginort   ";
 
     const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] = &[
         Vst3SubCategory::Fx,

@@ -35,7 +35,7 @@ To visualize ONNX graphs, [Netron](https://netron.app/) is a quick and easy way 
 If you want to build manually, follow these steps after installing [Rust](https://rustup.rs/):
 
 ```shell
-cargo xtask bundle -p onnx_plug_tract -p onnx_plug_burn --release
+cargo xtask bundle -p onnx_plug_tract -p onnx_plug_burn -p onnx_plug_ort --release
 ```
 
 ### Install build plugin
@@ -54,6 +54,12 @@ rsync -ahv --delete target/bundled/"${PLUGIN_NAME}".clap/ ~/Library/Audio/Plug-I
 rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
 ```
 
+```shell
+PLUGIN_NAME="Onnx Plug Ort"
+rsync -ahv --delete target/bundled/"${PLUGIN_NAME}".clap/ ~/Library/Audio/Plug-Ins/CLAP/"${PLUGIN_NAME}".clap
+rsync -ahv --delete target/bundled/${PLUGIN_NAME}.vst3/ ~/Library/Audio/Plug-Ins/VST3/${PLUGIN_NAME}.vst3
+```
+
 ### Validation
 
 #### CLAP
@@ -68,6 +74,11 @@ PLUGIN_NAME="Onnx Plug Burn"
 clap-validator validate target/bundled/"${PLUGIN_NAME}".clap
 ```
 
+```shell
+PLUGIN_NAME="Onnx Plug Ort"
+clap-validator validate target/bundled/"${PLUGIN_NAME}".clap
+```
+
 #### VST3
 
 ```shell
@@ -77,5 +88,10 @@ pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
 
 ```shell
 PLUGIN_NAME="Onnx Plug Burn"
+pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
+```
+
+```shell
+PLUGIN_NAME="Onnx Plug Ort"
 pluginval --verbose --strictness-level 5 target/bundled/${PLUGIN_NAME}.vst3
 ```
