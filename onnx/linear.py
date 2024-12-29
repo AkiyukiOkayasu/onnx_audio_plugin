@@ -3,7 +3,6 @@ import torch
 class Net(torch.nn.Module):
   def __init__(self, n_input, n_output):
     super().__init__()
-
     self.l1 = torch.nn.Linear(n_input, n_output)
     torch.nn.init.constant_(self.l1.weight, -1.0)
     torch.nn.init.constant_(self.l1.bias, 0.0)

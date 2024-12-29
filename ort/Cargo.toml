@@ -1,0 +1,17 @@
+[package]
+name = "onnx_plug_ort"
+description = "ONNX audio plugin using ort"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+homepage.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ndarray = "0.16.1"
+nih_plug = { workspace = true, features = ["assert_process_allocs"] }
+ort = "2.0.0-rc.9"
