@@ -2,14 +2,14 @@
 
 [![CI](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/AkiyukiOkayasu/onnx_audio_plugin/actions/workflows/ci.yaml)
 
-This is a minimal example of using ONNX in an audio plugin. There are two versions: one using [Tract](https://github.com/sonos/tract) and the other using [Burn](https://github.com/tracel-ai/burn) for ONNX execution.  
+This is a minimal example of using ONNX in an audio plugin. There are three versions: using [Tract](https://github.com/sonos/tract), [Burn](https://github.com/tracel-ai/burn), [ort](https://github.com/pykeio/ort) for ONNX execution.  
 
 This project is not production-ready and is not practical. However, it is intended for anyone who wants to learn about a minimal audio plugin using ONNX. If you are looking for practicality then you may want to check out [RTNeural](https://github.com/jatinchowdhury18/RTNeural).
 
 ## Features
 
 - Uses ONNX models for audio processing
-- Two implementations: one using [Tract](https://github.com/sonos/tract) and the other using [Burn](https://github.com/tracel-ai/burn)
+- Three implementations: using [Tract](https://github.com/sonos/tract), [Burn](https://github.com/tracel-ai/burn), [ort](https://github.com/pykeio/ort)
 - Supports VST3 and CLAP plugin formats
 
 ## Installation
