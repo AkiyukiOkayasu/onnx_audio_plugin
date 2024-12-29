@@ -1,12 +1,10 @@
-use ndarray::{Array0, Array1};
+use ndarray::Array1;
 use nih_plug::prelude::*;
 use ort::session::{builder::GraphOptimizationLevel, Session};
-use ort::value::Tensor;
 use std::sync::Arc;
 
 struct OnnxAudioPlugin {
     params: Arc<OnnxAudioPluginParams>,
-    // input_vec: tract_ndarray::Array1<f32>,
     model: Session,
 }
 
@@ -27,7 +25,6 @@ impl Default for OnnxAudioPlugin {
 
         Self {
             params: Arc::new(OnnxAudioPluginParams::default()),
-            // input_vec: tract_ndarray::Array1::<f32>::zeros(1),
             model,
         }
     }
